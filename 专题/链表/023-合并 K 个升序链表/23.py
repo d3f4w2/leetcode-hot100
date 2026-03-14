@@ -9,35 +9,33 @@ class Solution:
     def mergeKLists(self, lists):
         if not lists:
             return None
-        return self.merge_range(lists, 0, len(lists)-1)
-    
-
-
-    def merge_range(self, lists, left, right):
+        return self.merge_list(lists, 0, len(lists)-1)
+    def merge_list(self, lists, left, right):
         if left > right:
             return None
         if left == right:
             return lists[left]
         mid = (left + right) // 2
-        left_list = self.merge_range(lists, left, mid)
-        right_list = self.merge_range(lists, mid+1, right)
-        return self.merge_two_lists(left_list, right_list)
-
-
-
-    def merge_two_lists(self, l1, l2):
+        left_list = self.merge_list(lists, left, mid)
+        right_list = self.merge_list(lists, mid+1, right)
+        return self.merge_two(left_list, right_list)
+    def merge_two(self, l1, l2):
         dummy = ListNode(0)
         cur = dummy
         while l1 and l2:
-            if l1.val <= l2.val:
-                cur.next = l1
-                l1 = l1.next
-            else:
+            if l1.val > l2.val:
                 cur.next = l2
                 l2 = l2.next
+            else:
+                cur.next = l1
+                l1 = l1.next
+
             cur = cur.next
+
         cur.next = l1 if l1 else l2
+
         return dummy.next
+    
 
 
 def build_list(nums):
